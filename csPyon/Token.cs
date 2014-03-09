@@ -11,7 +11,7 @@ namespace csPyon
         OPEN_PAREN = 40, CLOSE_PAREN = 41,
         OPEN_BRACKET = 91, CLOSE_BRACKET = 93,
         OPEN_CURLY = 123, CLOSE_CURLY = 125,
-        EQ_SIGN = 61, COLON = 58
+        EQ_SIGN = 61, COLON = 58, SEMI = 59
     };
 
     public class LexError : Exception
@@ -199,8 +199,24 @@ namespace csPyon
                     output.Add(readNumber(chars));
                     continue;
                 }
-
-                throw new LexError("don't know what to do");
+                if (first == '('
+                    || first == ')'
+                    || first == '['
+                    || first == ']'
+                    || first == '{'
+                    || first == '}'
+                    || first == ':'
+                    || first == ';'
+                    || first == ','
+                    || first == '=')
+                {
+                    chars.RemoveAt(0);
+                    Token syntax = new Token();
+                    syntax.type_ = (TokenType)(int)first;
+                    output.Add(syntax);
+                    continue;
+                }
+                throw new LexError("don't know what to do with " + first);
             }
             return output;
         }

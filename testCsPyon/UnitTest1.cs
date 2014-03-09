@@ -82,5 +82,16 @@ namespace testCsPyon
         }
 
 
+        [TestMethod]
+        public void TestSyntax()
+        {
+            List<Token> tokens = Token.tokenize("( ) ; = : [ ] ");
+            Assert.AreEqual(tokens[0].ToString(), "Syntax('(')");
+            Assert.AreEqual(tokens[1].ToString(), "Syntax(')')");
+            Assert.AreEqual(tokens[2].ToString(), "Syntax(';')");
+            Assert.AreEqual(tokens[3].ToString(), "Syntax('=')");
+        }
+
+
     }
 }
