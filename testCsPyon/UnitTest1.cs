@@ -61,21 +61,26 @@ namespace testCsPyon
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestStrings()
         {
-            List<Token> tokens = Token.tokenize("hello world");
+            List<Token> tokens = Token.tokenize("hello 'universe' \"foo\" bar");
             Assert.AreEqual(tokens[0].ToString(), "Bareword('hello')");
-            Assert.AreEqual(tokens[1].ToString(), "Bareword('world')");
+            Assert.AreEqual(tokens[1].ToString(), "Quoted('universe')");
+            Assert.AreEqual(tokens[2].ToString(), "Quoted('foo')");
+            Assert.AreEqual(tokens[3].ToString(), "Bareword('bar')");
         }
 
 
         [TestMethod]
-        public void TestMethod2()
+        public void TestNumbers()
         {
-            List<Token> tokens = Token.tokenize("hello world");
-            Assert.AreEqual(tokens[0].ToString(), "Bareword('hello')");
-            Assert.AreEqual(tokens[1].ToString(), "Bareword('universe')");
+            List<Token> tokens = Token.tokenize("45 0xFF -3 -1.7e-2");
+            Assert.AreEqual(tokens[0].ToString(), "Number(45)");
+            Assert.AreEqual(tokens[1].ToString(), "Number(255)");
+            Assert.AreEqual(tokens[2].ToString(), "Number(-3)");
+            Assert.AreEqual(tokens[3].ToString(), "Number(-0.017)");
         }
+
 
     }
 }
