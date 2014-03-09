@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="c2257ef8-49da-4c94-9ee6-605baecdf788" name="darin@LEVIATHAN 2014-03-09 05:17:33" runUser="LEVIATHAN\darin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="514474b7-5914-428b-a661-f9114d2a9391">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="darin_LEVIATHAN 2014-03-09 05_17_33">
+      <DeploymentItem filename="C:\Users\darin\csPyon\csPyon\bin\Debug\csPyon.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2014-03-09T05:17:33.3806806-06:00" queuing="2014-03-09T05:17:33.9447128-06:00" start="2014-03-09T05:17:33.9737145-06:00" finish="2014-03-09T05:18:17.5452066-06:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TestMethod1" storage="c:\users\darin\cspyon\testcspyon\bin\debug\testcspyon.dll" id="6d21edd4-b3a3-247e-fdd8-a4f2e0335346">
+      <Execution id="680003e4-80af-4a08-90e1-0171e7d42928" />
+      <TestMethod codeBase="C:/Users/darin/csPyon/testCsPyon/bin/Debug/testCsPyon.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="testCsPyon.UnitTest1, testCsPyon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestMethod1" />
+    </UnitTest>
+    <UnitTest name="TestMethod2" storage="c:\users\darin\cspyon\testcspyon\bin\debug\testcspyon.dll" id="7f39bffa-938f-ba93-a3ee-376c8fcc3651">
+      <Execution id="548ee7c8-fb58-41eb-9a98-1eabfac1cc2c" />
+      <TestMethod codeBase="C:/Users/darin/csPyon/testCsPyon/bin/Debug/testCsPyon.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="testCsPyon.UnitTest1, testCsPyon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestMethod2" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="6d21edd4-b3a3-247e-fdd8-a4f2e0335346" executionId="680003e4-80af-4a08-90e1-0171e7d42928" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7f39bffa-938f-ba93-a3ee-376c8fcc3651" executionId="548ee7c8-fb58-41eb-9a98-1eabfac1cc2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="680003e4-80af-4a08-90e1-0171e7d42928" testId="6d21edd4-b3a3-247e-fdd8-a4f2e0335346" testName="TestMethod1" computerName="LEVIATHAN" duration="00:00:00.0118415" startTime="2014-03-09T05:17:33.9907155-06:00" endTime="2014-03-09T05:17:34.7377582-06:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="680003e4-80af-4a08-90e1-0171e7d42928">
+    </UnitTestResult>
+    <UnitTestResult executionId="548ee7c8-fb58-41eb-9a98-1eabfac1cc2c" testId="7f39bffa-938f-ba93-a3ee-376c8fcc3651" testName="TestMethod2" computerName="LEVIATHAN" duration="00:00:42.7471380" startTime="2014-03-09T05:17:34.7417584-06:00" endTime="2014-03-09T05:18:17.4952038-06:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="548ee7c8-fb58-41eb-9a98-1eabfac1cc2c">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.AreEqual failed. Expected:&lt;Bareword('world')&gt;. Actual:&lt;Bareword('universe')&gt;. </Message>
+          <StackTrace>   at testCsPyon.UnitTest1.TestMethod2() in C:\Users\darin\csPyon\testCsPyon\UnitTest1.cs:line 77
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
