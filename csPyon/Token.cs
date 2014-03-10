@@ -27,7 +27,8 @@ namespace csPyon
     {
         public TokenType type_;
         public object value_;
-        public string ToString()
+
+        public override string ToString()
         {
             if (type_ == TokenType.END) return "End()";
             if (type_ == TokenType.BAREWORD) 
@@ -39,7 +40,7 @@ namespace csPyon
             return "Syntax('" + (char)(int)type_ + "')";
         }
 
-        private static Token readBareword(List<char> chars)
+        private static Token ReadBareword(List<char> chars)
         {
             // Assumes that the first character of chars is the
             // beginning of a bareword.
@@ -58,7 +59,7 @@ namespace csPyon
             return output;
         }
 
-        private static Token readQuoted(List<char> chars)
+        private static Token ReadQuoted(List<char> chars)
         {
             // Assumes that the first character of chars is the
             // beginning of a quoted string (" or ').
@@ -83,7 +84,7 @@ namespace csPyon
 
 
 
-        private static Token readNumber(List<char> chars)
+        private static Token ReadNumber(List<char> chars)
         {
             // Assumes that the first character of chars is a digit or +/-.
             Token output = new Token();
@@ -169,7 +170,7 @@ namespace csPyon
         }
 
 
-        public static List<Token> tokenize(string input)
+        public static List<Token> Tokenize(string input)
         {
             List<Token> output = new List<Token>();
             List<char> chars = new List<char>(input.Length);
@@ -185,18 +186,18 @@ namespace csPyon
                 }
                 if (System.Char.IsLetter(first) || first == '_')
                 {
-                    output.Add(readBareword(chars));
+                    output.Add(ReadBareword(chars));
                     continue;
                 }
                 if (first == '\'' || first == '"')
                 {
-                    output.Add(readQuoted(chars));
+                    output.Add(ReadQuoted(chars));
                     continue;
                 }
                 if (System.Char.IsDigit(first) ||
                     first == '-' || first == '+' || first == '.')
                 {
-                    output.Add(readNumber(chars));
+                    output.Add(ReadNumber(chars));
                     continue;
                 }
                 if (first == '('
