@@ -84,31 +84,33 @@ namespace csPyon
             {
                 builder.Append(thing.ToString());
             }
+            else if (thing.GetType() == typeof(Pyob))
+            {
+                Pyob pyob = (Pyob) thing;
+                builder.Append(pyob.head);
+                builder.Append("(");
+                for (int i = 0; i < pyob.ordered.Length; i++)
+                {
+                    if (hit) builder.Append(",");
+                    AddRepr(pyob.ordered[i],builder);
+                    hit = true;
+                }
+                foreach (DictionaryEntry entry in pyob.keyed)
+                {
+                    if (hit) builder.Append(",");
+                    builder.Append(entry.Key.ToString());
+                    builder.Append("=");
+                    AddRepr(entry.Value, builder);
+                    hit = true;
+                }
+                builder.Append(")");
+            }
             else
                 throw new Exception();
         }
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(this.head);
-            builder.Append("(");
-            bool stuff = false;
-            for (int i = 0; i < ordered.Length; i++)
-            {
-                if (stuff) builder.Append(",");
-                builder.Append(Repr(ordered[i]));
-                stuff = true;
-            }
-            foreach (DictionaryEntry entry in keyed)
-            {
-                if (stuff) builder.Append(",");
-                builder.Append(entry.Key.ToString());
-                builder.Append("=");
-                builder.Append(Repr(entry.Value));
-                stuff = true;
-            }
-            builder.Append(")");
-            return builder.ToString();
+            return Repr(this);
         }
     }
 }

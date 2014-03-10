@@ -153,9 +153,19 @@ namespace csPyon
             if (!floating)
             {
                 if (sign == -1)
-                    output.value_ = -1 * (long)beforeDecimal;
+                {
+                    if (beforeDecimal < System.Int32.MaxValue)
+                        output.value_ = -1 * (int)beforeDecimal;
+                    else
+                        output.value_ = -1 * (long)beforeDecimal;
+                }
                 else
-                    output.value_ = beforeDecimal;
+                {
+                    if (beforeDecimal < System.Int32.MaxValue)
+                        output.value_ = (int)beforeDecimal;
+                    else
+                        output.value_ = beforeDecimal;
+                }
                 return output;
             }
             double val = sign * (beforeDecimal + afterDecimal);

@@ -21,7 +21,7 @@ namespace csPyon
         public static object Parse(string text)
         {
             Parser parser = new Parser(text);
-            return parser.ReadValue();
+            return parser.ReadValue(true);
         }
         private object ReadList()
         {
@@ -43,16 +43,75 @@ namespace csPyon
                     tokens.RemoveAt(0);
                     continue;
                 }
-                buffer.Add(this.ReadValue());
+                buffer.Add(this.ReadValue(false));
             }
         }
         private object ReadDict()
         {
-            throw new NotImplemented();
+            Hashtable hashTable = new Hashtable();
+            while (true)
+            {
+                sanity -= 1;
+                if (sanity <= 0)
+                    throw new SanityError();
+                if (tokens.Count == 0)
+                    throw new ParseError();
+                if (tokens[0].type_ == TokenType.CLOSE_CURLY)
+                {
+                    tokens.RemoveAt(0);
+                    return hashTable;
+                }
+                if (tokens[0].type_ == TokenType.COMMA)
+                {
+                    tokens.RemoveAt(0);
+                    continue;
+                }
+                if (tokens.Count < 3)
+                    throw new ParseError();
+                if (!(tokens[1].type_ == TokenType.COLON || 
+                      tokens[1].type_ == TokenType.EQ_SIGN))
+                    throw new ParseError();
+                if (!(tokens[0].type_ == TokenType.QUOTED ||
+                      tokens[0].type_ == TokenType.BAREWORD))
+                    throw new ParseError();
+                string key = tokens[0].value_.ToString();
+                tokens.RemoveAt(0);
+                tokens.RemoveAt(0);
+                object value = ReadValue(false);
+                hashTable[key] = value;
+            }
         }
-        private object ReadPyob()
+        private object ReadPyob(string head)
         {
-            throw new NotImplemented();
+            List<object> ordered = new List<object>();
+            Hashtable hashTable = new Hashtable();
+            while (true)
+            {
+                if (tokens.Count == 0)
+                    throw new ParseError();
+                if (tokens[0].type_ == TokenType.CLOSE_PAREN)
+                {
+                    tokens.RemoveAt(0);
+                    return new Pyob(
+                        head,ordered.ToArray(),hashTable);
+                }
+                if (tokens.Count >= 4 &&
+                    tokens[0].type_ == TokenType.BAREWORD &&
+                    tokens[1].type_ == TokenType.EQ_SIGN)
+                {
+                    string key = tokens[0].value_.ToString();
+                    tokens.RemoveAt(0);
+                    tokens.RemoveAt(0);
+                    hashTable[key] = ReadValue(false);
+                    continue;
+                }
+                if (tokens[0].type_ == TokenType.COMMA)
+                {
+                    tokens.RemoveAt(0);
+                    continue;
+                }
+                ordered.Add(ReadValue(false));
+            }
         }
         private object InterpretBareword(string word)
         {
@@ -65,7 +124,7 @@ namespace csPyon
             if (lower == "inf") return System.Double.PositiveInfinity;
             throw new ParseError();
         }
-        public object ReadValue()
+        public object ReadValue(bool top)
         {
             while (true)
             {
@@ -73,7 +132,11 @@ namespace csPyon
                     throw new ParseError();
                 Token popped = tokens[0];
                 tokens.RemoveAt(0);
-                if (popped.type_ == TokenType.SEMI) continue;
+                if (popped.type_ == TokenType.SEMI)
+                {
+                    if (!top) throw new ParseError();
+                    continue;
+                }
                 if (popped.type_ == TokenType.NUMBER || 
                     popped.type_ == TokenType.QUOTED)
                     return popped.value_;
@@ -87,7 +150,7 @@ namespace csPyon
                     tokens[0].type_ == TokenType.OPEN_PAREN)
                 {
                     tokens.RemoveAt(0);
-                    return ReadPyob();
+                    return ReadPyob(popped.value_.ToString());
                 }
                 return InterpretBareword(popped.value_.ToString());
             }

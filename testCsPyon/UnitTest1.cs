@@ -39,27 +39,6 @@ namespace testCsPyon
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void TestStrings()
@@ -128,5 +107,42 @@ namespace testCsPyon
             Assert.AreEqual(exp,repr);
         }
 
+        [TestMethod]
+        public void TestFancy()
+        {
+            string input = "{'foo':17,'bar':[5,19]}";
+            object got = Parser.Parse(input);
+            Assert.AreEqual("Hashtable", got.GetType().Name);
+            Hashtable hashtable = (Hashtable)got;
+            Assert.AreEqual(17, hashtable["foo"]);
+            object[] arr = (object[])hashtable["bar"];
+            Assert.AreEqual(19, arr[1]);
+        }
+
+        [TestMethod]
+        public void TestParsePyob()
+        {
+            string input = "foo(3,'cheese',bar=99,ate=[])";
+            object got = Parser.Parse(input);
+            Assert.AreEqual("Pyob", got.GetType().Name);
+            Pyob pyob = (Pyob)got;
+            Assert.AreEqual("foo",pyob.head);
+            Assert.AreEqual(2, pyob.ordered.Length);
+            Assert.AreEqual("cheese", pyob.ordered[1]);
+            Assert.AreEqual(99, pyob.keyed["bar"]);
+            Assert.IsTrue(pyob.keyed["ate"].GetType().IsArray);
+        }
+
+        [TestMethod]
+        public void TestDouble()
+        {
+            string x = "[13505, w(s(asks=1,bids=1),em=0,exTpv=2,pnl=0.0,)]";
+            object got = Parser.Parse(x);
+            Assert.IsTrue(got.GetType().IsArray);
+            object[] arr = (object[])got;
+            Pyob w = (Pyob) arr[1];
+            Pyob s = (Pyob)w.ordered[0];
+            Assert.AreEqual(1, s.keyed["bids"]);
+        }
     }
 }
