@@ -36,6 +36,22 @@ namespace csPyon
             return builder.ToString();
         }
 
+        public object this[object desc] 
+        {
+            get
+            {
+                if (desc.GetType() == typeof(string))
+                    return this.keyed[desc.ToString()];
+                if (desc.GetType() == typeof(Int32))
+                    return this.ordered[Convert.ToInt32(desc)];
+                throw new Exception("not understood: " + desc.GetType().ToString());
+            }
+            set
+            {
+                throw new Exception("foo");
+            }
+        }
+
         private static void AddRepr(object thing, StringBuilder builder)
         {
             bool hit = false;

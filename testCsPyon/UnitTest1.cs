@@ -116,5 +116,14 @@ namespace testCsPyon
             Pyob s = (Pyob)w.ordered[0];
             Assert.AreEqual(1, s.keyed["bids"]);
         }
+
+        [TestMethod]
+        public void TestIndexer()
+        {
+            string x = "Foo('cheese','fries',tasty='yyy',run='walk')";
+            var got = (Pyob) Parser.Parse(x);
+            Assert.AreEqual("fries",got[1]);
+            Assert.AreEqual("yyy",got["tasty"]);
+        }
     }
 }
