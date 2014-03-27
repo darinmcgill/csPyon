@@ -12,6 +12,37 @@ namespace testCsPyon
     [TestClass]
     public class UnitTest1
     {
+        public static bool Same(object a, object b)
+        {
+            if (a == null || b == null)
+                return (a == null && b == null);
+            if (a.GetType() != b.GetType())
+                return false;
+            if (a.GetType() == typeof(System.Double))
+                return Math.Abs(Convert.ToDouble(a) - Convert.ToDouble(b)) < 1e-10;
+            if (a.GetType() == typeof(System.Int32))
+                return Convert.ToInt32(a) == Convert.ToInt32(b);
+            return a == b;
+        }
+        public static void AssertMatches(object[] a, object[] b)
+        {
+            if (a == null || b == null) 
+                throw new Exception("argument is null");
+            if (a.Length != b.Length)
+                throw new Exception("lengths don't match");
+            for (int i = 0; i < a.Length; i++)
+                if (!Same(a[i],b[i]))
+                    throw new Exception("not the same: " 
+                        + a[i].ToString() 
+                        + " " 
+                        + b[i].ToString()
+                        + " "
+                        + a[i].GetType().ToString()
+                        + " "
+                        + b[i].GetType().ToString()
+                        );
+        }
+
         [TestMethod]
         public void TestStrings()
         {
@@ -124,6 +155,16 @@ namespace testCsPyon
             var got = (Pyob) Parser.Parse(x);
             Assert.AreEqual("fries",got[1]);
             Assert.AreEqual("yyy",got["tasty"]);
+        }
+
+        [TestMethod]
+        public void TestCmdParse()
+        {
+            string[] args = new string[] { "cheese", "3.9", "fries=4", "bar=", "baz=chicken", "7" };
+            var pyob = CommandLineParser.Parse(args);
+            AssertMatches(pyob.ordered, new object[] { "cheese", 3.9, 7 });
+            Assert.AreEqual(4, pyob["fries"]);
+            Assert.AreEqual(3.9, pyob[1]);
         }
     }
 }

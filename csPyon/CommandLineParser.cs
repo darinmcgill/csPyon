@@ -10,7 +10,14 @@ namespace csPyon
     {
         public static object ReadValue(string stuff)
         {
-            throw new Exception("not implemented");
+            if (stuff.Length == 0) return null;
+            char first = stuff[0];
+            if (!System.Char.IsDigit(first))
+                return stuff;
+            var tokens = Token.Tokenize(stuff);
+            if (tokens[0].type_ != TokenType.NUMBER)
+                throw new Exception("argument");
+            return tokens[0].value_;
         }
         public static Pyob Parse(string[] args)
         {
@@ -20,15 +27,16 @@ namespace csPyon
             {
                 if (arg.Contains('='))
                 {
-                    var parts = arg.Split('=');
-                    keyed[parts[0]] = Parser.Parse(parts[1]);
+                    var splitOn = new char[] { '=' };
+                    var parts = arg.Split(splitOn,2,StringSplitOptions.None);
+                    keyed[parts[0]] = ReadValue(parts[1]);
                 }
                 else
                 {
+                    ordered.Add(ReadValue(arg));
                 }
-
             }
-            throw new Exception("not implemented");
+            return new Pyob("args", ordered.ToArray(), keyed);
         }
     }
 }
