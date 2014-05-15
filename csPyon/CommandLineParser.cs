@@ -19,6 +19,14 @@ namespace csPyon
                 throw new Exception("argument");
             return tokens[0].value_;
         }
+        public static object ReadMany(string stuff)
+        {
+            var output = new List<object>();
+            var parts = stuff.Split(new char[] { ',' });
+            foreach (string item in parts)
+                output.Add(ReadValue(item));
+            return output.ToArray();
+        }
         public static Pyob Parse(string[] args)
         {
             var keyed = new Hashtable();
@@ -29,7 +37,10 @@ namespace csPyon
                 {
                     var splitOn = new char[] { '=' };
                     var parts = arg.Split(splitOn,2,StringSplitOptions.None);
-                    keyed[parts[0]] = ReadValue(parts[1]);
+                    if (parts[1].Contains(','))
+                        keyed[parts[0]] = ReadMany(parts[1]);
+                    else
+                        keyed[parts[0]] = ReadValue(parts[1]);
                 }
                 else
                 {

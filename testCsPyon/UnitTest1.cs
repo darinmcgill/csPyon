@@ -166,5 +166,16 @@ namespace testCsPyon
             Assert.AreEqual(4, pyob["fries"]);
             Assert.AreEqual(3.9, pyob[1]);
         }
+
+        [TestMethod]
+        public void TestMulti()
+        {
+            string[] args = new string[] { "bar=", "baz=chicken,", "testMe", "nice=17,beef" };
+            var pyob = CommandLineParser.Parse(args);
+            Assert.AreEqual(null, pyob["bar"]);
+            Assert.AreEqual("testMe", pyob[0]);
+            Assert.AreEqual(17, ((object[]) pyob["nice"])[0]);
+            Assert.AreEqual("beef", ((object[])pyob["nice"])[1]);
+        }
     }
 }
