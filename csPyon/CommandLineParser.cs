@@ -12,7 +12,7 @@ namespace csPyon
         {
             if (stuff.Length == 0) return null;
             char first = stuff[0];
-            if (!System.Char.IsDigit(first))
+            if (!(System.Char.IsDigit(first) || first == '.'))
                 return stuff;
             var tokens = Token.Tokenize(stuff);
             if (tokens[0].type_ != TokenType.NUMBER)
@@ -22,7 +22,7 @@ namespace csPyon
         public static object ReadMany(string stuff)
         {
             var output = new List<object>();
-            var parts = stuff.Split(new char[] { ',' });
+            var parts = stuff.Split(new char[] { '+' });
             foreach (string item in parts)
                 output.Add(ReadValue(item));
             return output.ToArray();
@@ -37,7 +37,7 @@ namespace csPyon
                 {
                     var splitOn = new char[] { '=' };
                     var parts = arg.Split(splitOn,2,StringSplitOptions.None);
-                    if (parts[1].Contains(','))
+                    if (parts[1].Contains('+'))
                         keyed[parts[0]] = ReadMany(parts[1]);
                     else
                         keyed[parts[0]] = ReadValue(parts[1]);
